@@ -41,7 +41,7 @@ Chess is free software under the GPL-3.0. It bundles Stockfish (stockfish.js, GP
 
 ## Try it
 
-<!-- "Open in Kazo OS" link: https://os.kazo.ca/?autolunch=ca.kazo.chess goes here once Kazo OS supports it. -->
+<!-- "Open in Kazo OS" link: https://os.kazo.ca/?autolaunch=ca.kazo.chess goes here once Kazo OS supports it. -->
 
 Open [Kazo OS](https://os.kazo.ca/) and install Chess from the **Kazo OS Store** (category Entertainment), or in the Kazo OS Terminal, as an administrator: `sudo kazopkg install Kazo-ca/Os-App-Chess`.
 

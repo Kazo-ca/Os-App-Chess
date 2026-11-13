@@ -41,7 +41,7 @@ Un échiquier aux couleurs de votre thème Kazo OS, sur le bureau comme sur un t
 
 ## Essayer
 
-<!-- Lien « Ouvrir dans Kazo OS » : https://os.kazo.ca/?autolunch=ca.kazo.chess va ici quand Kazo OS le prendra en charge. -->
+<!-- Lien « Ouvrir dans Kazo OS » : https://os.kazo.ca/?autolaunch=ca.kazo.chess va ici quand Kazo OS le prendra en charge. -->
 
 Ouvrez [Kazo OS](https://os.kazo.ca/) et installez Échecs depuis le **Kazo OS Store** (catégorie Divertissement), ou dans le Terminal de Kazo OS, en administrateur : `sudo kazopkg install Kazo-ca/Os-App-Chess`.
 
