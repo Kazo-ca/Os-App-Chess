@@ -73,6 +73,13 @@ export async function openChess(page, baseUrl, { mobile = false } = {}) {
     const launcher = mobile
         ? page.getByRole('button', { name: 'All applications' })
         : page.getByText('Applications', { exact: true });
+    // The welcome wizard (Kazo OS ADR 0276, from 3.4.0) shows once per account: skip it when
+    // this Kazo OS version has it, so the boot works on older and newer versions alike.
+    const skip = page.locator('.welcome-skip');
+    await skip.or(launcher).first().waitFor({ timeout: 60_000 });
+    if (await skip.isVisible()) {
+        await skip.click();
+    }
     await launcher.click({ timeout: 60_000 });
     await page.getByText('Chess', { exact: true }).first().click();
     await page.locator('.chess-board .piece').first().waitFor({ timeout: 30_000 });
