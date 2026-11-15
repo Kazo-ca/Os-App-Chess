@@ -28,7 +28,7 @@ Os-App-Chess/
 │  ├─ js/                    # tests des modules JavaScript (node --test)
 │  └─ e2e/                   # parcours dans l'hôte (node --test + Playwright)
 ├─ store/                    # fiche du Kazo OS Store : icône, descriptions, captures, store.json
-├─ .github/workflows/        # ci.yml, publish-*.yml, tag-release.yml
+├─ .github/workflows/        # ci.yml, publish-*.yml, tag-release.yml, sdk-update.yml (appels à Os-AppTemplate@v1)
 └─ package.json              # outils des tests JavaScript
 ```
 
@@ -274,6 +274,25 @@ manifeste, puis lance les deux workflows ci-dessus, car un tag poussé avec le
 jeton du workflow ne les lance pas. Avec `publish` désactivé, il pose seulement
 le tag (pour une version déjà publiée). Il refuse un commit hors de `main` et une
 version dont le tag est déjà sur un autre commit.
+
+### Workflows partagés et mise à jour du SDK Kazo OS
+
+Depuis l'ADR 0271 de Kazo OS (§4, §7), les workflows de ce dépôt sont des
+appels d'une ligne aux workflows réutilisables de
+[`Kazo-ca/Os-AppTemplate`](https://github.com/Kazo-ca/Os-AppTemplate) au tag
+`v1` (`kazoos-ci.yml`, `kazoos-publish-to-store.yml`,
+`kazoos-publish-packages.yml`, `kazoos-tag-release.yml`,
+`kazoos-sdk-update.yml`) : une correction se fait une fois, là-bas.
+`tag-release.yml` pose le tag sur un commit de `main`, ou de `beta` pour une
+version bêta (`1.2.1-beta.1`), qui va dans la branche `beta` du catalogue.
+`sdk-update.yml` (« Kazo OS SDK update ») passe l'app à chaque version de
+Kazo OS (dispatch `kazoos-sdk-released` envoyé par Kazo OS, vérification chaque
+heure sinon) : branche `kazoos-sdk/<version>`, version relevée par
+`.github/scripts/bump-app-version.sh`, la même CI que `ci.yml`, puis
+publication sur le canal bêta (préversion de Kazo OS) ou sur `main` (version
+stable mineure ou majeure) ; une CI rouge ouvre une issue `TODO`. Jetons :
+secrets d'organisation `KAZO_AUTOMATION_APP_ID`/`KAZO_AUTOMATION_APP_KEY`, ou
+`HACK_STORE_TOKEN` ; jamais de clé de signature. Ce dépôt ne change que ses workflows : l'app est en production.
 
 **Une app installée n'est pas une app compilée dans l'OS.** Trois différences,
 toutes vérifiées par `npm run test:installed` (plus bas) :
