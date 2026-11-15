@@ -2,6 +2,11 @@
   "appId": "ca.kazo.chess",
   "versions": [
     {
+      "version": "1.1.1",
+      "path": "1.1.1/ca.kazo.chess-1.1.1.kazoapp",
+      "sha256": "62d02d8fe55f5e9088f9dbd6342605e7457780ed8ceb57850b38a98e0f755751"
+    },
+    {
       "version": "1.1.1-beta.1",
       "path": "1.1.1-beta.1/ca.kazo.chess-1.1.1-beta.1.kazoapp",
       "sha256": "fabfcf229191d8801ff6fd3f2e07e4e27f2c1de7b476539eeb4d819a41f320ab"
