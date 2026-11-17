@@ -35,7 +35,7 @@ public sealed class ChessApp : AppDefinition
 
     /// <inheritdoc />
     /// <remarks>The tag that publishes to the Kazo OS Store must be v + this version.</remarks>
-    public override string Version => "1.1.1";
+    public override string Version => "1.1.2";
 
     /// <inheritdoc />
     public override IReadOnlyList<string> Capabilities =>
