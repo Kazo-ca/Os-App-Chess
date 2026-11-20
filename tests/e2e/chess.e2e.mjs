@@ -1,9 +1,10 @@
-// End-to-end runs of the Chess app inside the Kazo OS host: `npm run test:e2e` after
-// `dotnet build Kazo.Chess.slnx`. Each test boots a fresh browser profile.
+// End-to-end runs of the Chess app inside Kazo OS: `npm run test:e2e` after
+// `dotnet build Kazo.Chess.slnx`. Each test boots a fresh browser profile. In the CI they run on the
+// published trimmed OS, with Chess installed by kazopkg (Kazo OS ADR 0281 §5, see host.mjs).
 import { after, before, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium, devices } from 'playwright';
-import { openChess, squareCenter, startHost } from './host.mjs';
+import { openChess, phoneHost, squareCenter, startHost } from './host.mjs';
 
 let host;
 let browser;
@@ -15,7 +16,8 @@ before(async () => {
 
 after(async () => {
     await browser?.close();
-    host?.stop();
+    await host?.stop();
+    host?.assertNoFailures();
 });
 
 const status = page => page.locator('.status-text');
@@ -117,9 +119,10 @@ test('a pawn reaching the last rank asks for its new piece', { timeout: 300_000 
 });
 
 test('the board fits a phone screen and plays by touch', { timeout: 300_000 }, async () => {
+    const phone = await phoneHost(host);
     const context = await browser.newContext({ ...devices['Pixel 7'] });
     const page = await context.newPage();
-    await openChess(page, host.baseUrl, { mobile: true });
+    await openChess(page, phone.baseUrl, { mobile: true });
     const board = await page.locator('.board-svg').boundingBox();
     const viewport = page.viewportSize();
     assert.ok(board.width > viewport.width * 0.8, `the board is ${board.width}px wide on a ${viewport.width}px screen`);
@@ -132,6 +135,7 @@ test('the board fits a phone screen and plays by touch', { timeout: 300_000 }, a
     await pieceOn(page, 'd4').waitFor();
     assert.equal(await status(page).innerText(), 'Black to move');
     await context.close();
+    await phone.stop();
 });
 
 test('against the computer as Black: Stockfish opens and answers', { timeout: 300_000 }, async () => {
